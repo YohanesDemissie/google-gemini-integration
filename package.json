@@ -1,0 +1,20 @@
+{
+  "name": "google-gemini-integration",
+  "version": "1.0.0",
+  "description": "An AI interacive boilerplate to re-use for specific AI applications (like exercise tips, food recipes, and even resume reviews) for future projects.",
+  "homepage": "https://github.com/YohanesDemissie/google-gemini-integration#readme",
+  "bugs": {
+    "url": "https://github.com/YohanesDemissie/google-gemini-integration/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YohanesDemissie/google-gemini-integration.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
