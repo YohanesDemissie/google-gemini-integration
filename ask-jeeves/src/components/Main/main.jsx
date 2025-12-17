@@ -14,7 +14,9 @@ const Main = () => {
                 <img src={assets.user_icon} alt="" />
             </div>
             <div className="main-container">
-                <div className="greet">
+                {!showResult ?
+                 <>
+                     <div className="greet">
                     <p><span>Hello, Dev.</span></p>
                     <p>How can I assist you today?</p>
                 </div>
@@ -36,6 +38,25 @@ const Main = () => {
                         <img src={assets.code_icon} alt="" />
                     </div>
                 </div>
+                 </> : 
+                    <div className="result">
+                        <div className="result-title">
+                            <img src={assets.user_icon} alt="" />
+                            <p>{recentPrompt}</p>
+                        </div>
+                        <div className="result-data">
+                            <img src={assets.gemini_icon} alt="" />
+                            {/* 
+                                ACTUAL API CALL RENDERING
+                                <p dangerouslySetInnerHTML={{__html:resultData}}></p>     
+                            */}
+                            
+                            {/* TESTING RESULT DATA W/O API CALLS */}
+                            <p>{resultData}</p> 
+                        </div>
+                    </div>
+                 }     
+               
                 <div className="main-bottom">
                     <div className="search-box">
                         <input onChange={(e)=>setInput(e.target.value)} value={input} type="text" placeholder="Enter a prompt here..." />
