@@ -1,43 +1,45 @@
-import { createContext, useState } from "react";
+import { useState, useEffect } from "react";
+import { Context } from "./CreateContext";
 import runChat from "../components/gemini";
 
-export const Context = createContext();
+const ContextProvider = ({ children }) => {
+  const [input, setInput] = useState("");
+  const [recentPrompts, setRecentPrompts] = useState("");
+  const [prevPrompts, setPrevPrompts] = useState([]);
+  const [showResult, setShowResult] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [resultData, setResultData] = useState("");
 
-const contextProvider = (props) => {
+  const onSent = async (prompt) => {
+    setResultData("");
+    setLoading(true);
+    setShowResult(true);
 
-    const [input, setInput] = useState("");
-    const [recentPrompts, setRecentPrompts] = useState("");
-    const [prevPrompts, setPrevPrompts] = useState([]);
-    const [showResult, setShowResult] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const [resultData, setResultData] = useState("");
+    const response = await runChat(prompt ?? input);
 
-    const onSent = async (pormpt) => {
+    setResultData(response);
+    setLoading(false);
+    setInput("");
+  };
 
-        setResultData("");
-        await runChat(input)
-    }
+  const contextValue = {
+    prevPrompts,
+    setPrevPrompts,
+    onSent,
+    setRecentPrompts,
+    recentPrompts,
+    showResult,
+    loading,
+    resultData,
+    input,
+    setInput,
+  };
 
-    onSent("what is react js?");
-    
-    const contextValue = {
-        prevPrompts,
-        setPrevPrompts,
-        onSent,
-        setRecentPrompts,
-        recentPrompts,
-        showResult,
-        loading,
-        resultData,
-        input,
-        setInput,
-    };
+  return (
+    <Context.Provider value={contextValue}>
+      {children}
+    </Context.Provider>
+  );
+};
 
-    return (
-        <Context.Provider value={contextValue}>
-            {props.children}
-        </Context.Provider>
-    )
-}
-
-export default contextProvider;
+export default ContextProvider;
