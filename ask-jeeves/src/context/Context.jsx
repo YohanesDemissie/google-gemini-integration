@@ -22,14 +22,27 @@ const ContextProvider = ({ children }) => {
   }
 
 
-  const onSent = async (prompt) => {
+  const onSent = async (promptOverride) => {
+    const prompt = promptOverride ?? input;
     setResultData("");
     setLoading(true);
     setShowResult(true);
+    setRecentPrompt(prompt);
+
+     // 🔹 Build conversation history INCLUDING the new prompt
+    const historyForGemini = [
+        ...prevPrompts,
+        { role: "user", text: prompt },
+    ];
     let response;
     if(prompt !== undefined){
-        response = await runChat(prompt);
+        response = await runChat(prompt, historyForGemini);
         setRecentPrompt(prompt);
+        setPrevPrompts(prev => [
+            ...prev,
+            { role: "user", text: prompt },
+            { role: "model", text: response },
+        ]);
     } else {
         setPrevPrompts(prev => [...prev, input]);
         setRecentPrompt(input);

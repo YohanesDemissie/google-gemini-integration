@@ -35,7 +35,11 @@ const buildContents = (history, currentPrompt) => {
 export async function runChat(prompt, history = []) {
   if (!prompt) throw new Error("Prompt is required");
 
-  const contents = buildContents(history, prompt);
+//   const contents = buildContents(history, prompt);
+    const contents = history.map(msg => ({
+        role: msg.role,
+        parts: [{ text: msg.text }],    
+    })); 
 
   const response = await ai.models.generateContent({
     model: "gemini-2.5-flash",
