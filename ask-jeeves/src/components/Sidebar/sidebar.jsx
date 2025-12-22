@@ -24,14 +24,18 @@ const Sidebar = () => {
                 {extended ? 
                     <div className="recent">
                         <p className="recent-title">Recent</p>
-                        {prevPrompts.map((item, index) => {
-                            return(
-                                <div onClick={() => loadPrompt(item)} className="recent-entry">
-                                    <img src={assets.message_icon} alt="" />
-                                    <p>{item.slice(18)} ...</p>
+                        {prevPrompts
+                            .filter(msg => msg.role === "user")
+                            .map((item, index) => (
+                                <div
+                                key={index}
+                                onClick={() => loadPrompt(item.text)}
+                                className="recent-entry"
+                                >
+                                <img src={assets.message_icon} alt="" />
+                                <p>{item.text.slice(0, 18)}...</p>
                                 </div>
-                            )
-                        })}
+                            ))}
                         <div className="recent-entry">
                             <img src={assets.message_icon} alt="" />
                             <p>What is the capital of France?</p>
@@ -53,8 +57,6 @@ const Sidebar = () => {
                     <img src={assets.setting_icon} alt="" />
                     {extended ? <p>Settings</p> : null}
                 </div>
-                : null
-
             </div>
         </div>
     )

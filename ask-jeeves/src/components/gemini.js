@@ -46,6 +46,18 @@ export async function runChat(prompt, history = []) {
     contents,
   });
 
+    // const response = {
+    //     model: "gemini-2.5-flash",
+    //     contents: {
+    //         role: "model",
+    //         parts: [
+    //             {
+    //                 text: `The capital of France is **Paris**. It is known for its rich history, art, and culture.`
+    //             }
+    //         ]
+    //     }
+    // };
+    // return response.contents.parts[0].text;
   return response.candidates[0].content.parts[0].text;
 }
 
