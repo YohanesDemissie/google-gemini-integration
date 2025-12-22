@@ -1,48 +1,64 @@
 import { GoogleGenAI } from "@google/genai";
 
-const geminiApiKey = import.meta.env.VITE_GEMINI_API_KEY;
+const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+const ai = new GoogleGenAI({ apiKey });
 
-const ai = new GoogleGenAI({
-    apiKey: geminiApiKey
-});
+/**
+ * Converts stored chat history into Gemini "contents" format
+ */
+const buildContents = (history, currentPrompt) => {
+  const contents = [];
 
-async function runChat(prompt) {
- 
-    // ACTUAL API CALL
-//     const response = await ai.models.generateContent({
-//     model: "gemini-2.5-flash",
-//     contents: "Explain how AI works in a few words",
-//   });
-//   console.log(response.text);
-//  return response.text;
-console.log("API CALL MADE");
- return "HELLO WOORLD"
+  history.forEach((chat) => {
+    contents.push({
+      role: "user",
+      parts: [{ text: chat.prompt }],
+    });
 
-// END ACTUAL API CALL
-    // TRY CATCH INTEGRATAION
-    // try{
-    //     const response = await ai.models.generateContent({
-    //         model: "gemini-2.5-flash",
-    //         contents: "Explain how AI works in a few words",
-    //     });
-    //     console.log(response.text);
-    // } catch(error){
-    //    // Check if the error is due to rate limits
-    //     if (error.status === 429 || error.message.includes('429')) {
-    //         console.error("Quota Exceeded Error:", error.message);
-    //         // Display a user-friendly message to the user
-    //         alert("You have run out of Gemini API requests for the day. Please try again tomorrow (quotas reset at midnight Pacific Time).");
-    //         // return (
-    //             //<Main />
-    //         //);
-    //     } else {
-    //         console.error("An error occurred:", error.message);
+    contents.push({
+      role: "model",
+      parts: [{ text: chat.response }],
+    });
+  });
+
+  contents.push({
+    role: "user",
+    parts: [{ text: currentPrompt }],
+  });
+
+  return contents;
+};
+
+/**
+ * Sends a context-aware prompt to Gemini
+ */
+export async function runChat(prompt, history = []) {
+  if (!prompt) throw new Error("Prompt is required");
+
+//   const contents = buildContents(history, prompt);
+    const contents = history.map(msg => ({
+        role: msg.role,
+        parts: [{ text: msg.text }],    
+    })); 
+
+  const response = await ai.models.generateContent({
+    model: "gemini-2.5-flash",
+    contents,
+  });
+
+    // const response = {
+    //     model: "gemini-2.5-flash",
+    //     contents: {
+    //         role: "model",
+    //         parts: [
+    //             {
+    //                 text: `The capital of France is **Paris**. It is known for its rich history, art, and culture.`
+    //             }
+    //         ]
     //     }
-    // }
-    // END TRY/CATCH INTEGRATION
-
+    // };
+    // return response.contents.parts[0].text;
+  return response.candidates[0].content.parts[0].text;
 }
-
-await runChat();
 
 export default runChat;

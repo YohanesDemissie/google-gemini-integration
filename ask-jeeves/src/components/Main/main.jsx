@@ -10,15 +10,15 @@ const Main = () => {
     return (
         <div className="main">
             <div className="nav">
-                <p>Ask Jeeves</p>
-                <img src={assets.user_icon} alt="" />
+                <p>Ask Geoffrey</p>
+                <img src={assets.geoffrey_icon} alt="" />
             </div>
             <div className="main-container">
                 {!showResult ?
                  <>
                      <div className="greet">
-                    <p><span>Hello, Dev.</span></p>
-                    <p>How can I assist you today?</p>
+                    <p><span>Greetings, Inquirist.</span></p>
+                    <p>How may I be of assistance?</p>
                 </div>
                 <div className="cards">
                     <div className="card">
@@ -41,18 +41,28 @@ const Main = () => {
                  </> : 
                     <div className="result">
                         <div className="result-title">
-                            <img src={assets.user_icon} alt="" />
+                            <img src={assets.geoffrey_icon} alt="" />
                             <p>{recentPrompt}</p>
                         </div>
                         <div className="result-data">
-                            <img src={assets.gemini_icon} alt="" />
-                            {/* 
-                                ACTUAL API CALL RENDERING
-                                <p dangerouslySetInnerHTML={{__html:resultData}}></p>     
-                            */}
-                            
-                            {/* TESTING RESULT DATA W/O API CALLS */}
-                            <p>{resultData}</p> 
+                            { loading ? 
+                                <div className="loader">
+                                    <hr /> 
+                                    <hr />
+                                    <hr />
+                                </div>
+                             : 
+                                <div>
+                                    <img src={assets.gemini_icon} alt="" />
+                                    {/* ACTUAL API CALL RENDERING */}
+                                        <p dangerouslySetInnerHTML={{__html:resultData}}></p>     
+                                    {/* END ACTUAL API CALL RENDERING */}
+
+                                    {/* TESTING RESULT DATA W/O API CALLS */}
+                                    {/* <p>{resultData}</p>  */}
+                                    {/* END TESTING  */}
+                                </div>
+                            }       
                         </div>
                     </div>
                  }     
@@ -63,7 +73,9 @@ const Main = () => {
                         <div>
                             <img src={assets.gallery_icon} alt="" />
                             <img src={assets.mic_icon} alt="" />
-                            <img onClick={()=>onSent()} src={assets.send_icon} alt="" />
+                            {input ? 
+                                <img onClick={()=>onSent()} src={assets.send_icon} alt="" />
+                             : null}
                         </div>
                     </div>
                     <p className="bottom-info">
