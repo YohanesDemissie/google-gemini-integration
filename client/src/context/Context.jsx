@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Context } from "./CreateContext";
-import runChat from "../components/gemini";
+import { sendPrompt } from "../api";
 
 const ContextProvider = ({ children }) => {
   const [input, setInput] = useState("");
@@ -22,36 +22,40 @@ const ContextProvider = ({ children }) => {
   }
 
 
-  const onSent = async (promptOverride) => {
-    const prompt = promptOverride ?? input;
+const onSent = async (promptOverride) => {
+  if (loading) return; // 🔒 prevent duplicate calls
+
+  setLoading(true);
+
+  const prompt = promptOverride ?? input;
+  if (!prompt) {
+    setLoading(false);
+    return;
+  }
+
+  try {
     setResultData("");
-    setLoading(true);
     setShowResult(true);
     setRecentPrompt(prompt);
 
-     // 🔹 Build conversation history INCLUDING the new prompt
     const historyForGemini = [
-        ...prevPrompts,
-        { role: "user", text: prompt },
+      ...prevPrompts,
+      { role: "user", text: prompt },
     ];
-    let response;
-    if(prompt !== undefined){
-        response = await runChat(prompt, historyForGemini);
-        setRecentPrompt(prompt);
-        setPrevPrompts(prev => [
-            ...prev,
-            { role: "user", text: prompt },
-            { role: "model", text: response },
-        ]);
-    } else {
-        setPrevPrompts(prev => [...prev, input]);
-        setRecentPrompt(input);
-        response = await runChat(input);
-    }
-    // setRecentPrompt(input)
-    // setPrevPrompts(prev => [...prev, input])
 
-    // const response = await runChat(input, prevPrompts);
+    const response = await sendPrompt(prompt, historyForGemini);
+
+    setPrevPrompts(prev => [
+      ...prev,
+      { role: "user", text: prompt },
+      // { role: "model", text: response },
+    ]);
+
+    
+    // render response (unchanged)
+    // animateResponse(response);
+
+        console.log(response)
     let responseArray = response.split("**");
     let newResponse = "";
     for(let i = 0; i < responseArray.length; i++) {
@@ -68,11 +72,35 @@ const ContextProvider = ({ children }) => {
         const nextWord = newResponseArray[i];
         delayPara(i, nextWord + "  ");
     }
-    // setResultData(newResponseTwo);
+
+  } catch (err) {
+    console.error(err);
+  } finally {
     setLoading(false);
     setInput("");
-    
-  };
+  }
+};
+
+  // new stuff
+  // e.preventDefault();
+  //   try {
+  //     const res = await fetch('http://localhost:3001/generate', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({ prompt }),
+  //     });
+
+  //     const data = await res.json();
+  //     setResponse(data.generatedText);
+  //   } catch (error) {
+  //     console.error('Error fetching data:', error);
+  //     setResponse('Error generating response.');
+  //   }
+  // };
+
+  //end new stuff
 
   const contextValue = {
     prevPrompts,
