@@ -3,8 +3,8 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const router = express.Router();
 
-// const genAi = new GoogleGenerativeAI(process.env.VITE_GEMINI_API_KEY);
-const genAi = new GoogleGenerativeAI("AIzaSyCA_lqctS1fXPcQVl_TV2bNnEPGHvd1eCs");
+const genAi = new GoogleGenerativeAI(process.env.VITE_GEMINI_API_KEY);
+// const genAi = new GoogleGenerativeAI("AIzaSyC5qYKODNrT3mqRYHf3d-o7N4qCJD38l9Q");
 
 router.post("/generate", async (req, res) => {
   try {
