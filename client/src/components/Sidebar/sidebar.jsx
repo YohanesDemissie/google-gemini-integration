@@ -8,10 +8,17 @@ const Sidebar = () => {
 
     const [extended, setExtended] = useState(false);
     const {onSent, prevPrompts, setRecentPrompt, newChat} = useContext(Context);
-    const loadPrompt = async (prompt) => {
-        setRecentPrompt(prompt)
-        await onSent(prompt);
-    }
+    // const loadPrompt = async (prompt) => {
+    //     setRecentPrompt(prompt)
+    //     await onSent(prompt)
+    //     console.log(prompt)
+    // }
+    const loadPrompt = async (promptObj) => {
+    const promptText = promptObj.text || promptObj; // safe fallback
+    setRecentPrompt(promptText);
+    await onSent(promptText);
+};
+
 
     return (
         <div className="sidebar">
@@ -28,7 +35,9 @@ const Sidebar = () => {
                             return(
                                 <div onClick={() => loadPrompt(item)} className="recent-entry">
                                     <img src={assets.message_icon} alt="" />
-                                    <p>{item.slice(18)} ...</p>
+                                    <p>{item.text}</p>
+                                    <p>{item.text.slice(18)}</p>
+                                    {/* <p>TEST</p> */}
                                 </div>
                             )
                         })}

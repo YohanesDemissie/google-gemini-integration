@@ -1,6 +1,5 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { Context } from "./CreateContext";
-// import runChat from "../components/gemini";
 import { sendPrompt } from "../api";
 
 const ContextProvider = ({ children }) => {
@@ -22,62 +21,19 @@ const ContextProvider = ({ children }) => {
     setShowResult(false);
   }
 
-  const requestInFlight = useRef(false);
-
-// const onSent = async (promptOverride) => {
-//   if (requestInFlight.current) return;
-//   requestInFlight.current = true;
-
-//   const prompt = promptOverride ?? input;
-//   if (!prompt) {
-//     requestInFlight.current = false;
-//     return;
-//   }
-
-//   try {
-//     setLoading(true);
-//     setResultData("");
-//     setShowResult(true);
-//     setRecentPrompt(prompt);
-
-//     const response = await sendPrompt(prompt);
-
-//     setPrevPrompts(prev => [
-//       ...prev,
-//       { role: "user", text: prompt },
-//       { role: "model", text: response },
-//     ]);
-
-//     renderResponse(response);
-
-//   } catch (err) {
-//     console.error("Frontend error:", err.message);
-//   } finally {
-//     requestInFlight.current = false;
-//     setLoading(false);
-//     setInput("");
-//   }
-// }
 
 const onSent = async (promptOverride) => {
-   if (requestInFlight.current) return;
-  requestInFlight.current = true;
+  if (loading) return; // 🔒 prevent duplicate calls
+
+  setLoading(true);
 
   const prompt = promptOverride ?? input;
   if (!prompt) {
-    requestInFlight.current = false;
+    setLoading(false);
     return;
   }
 
-  
-  // const prompt = promptOverride ?? input;
-  // if (!prompt) {
-    //   setLoading(false);
-    //   return;
-    // }
-    
-    try {
-    setLoading(true);
+  try {
     setResultData("");
     setShowResult(true);
     setRecentPrompt(prompt);
@@ -87,12 +43,12 @@ const onSent = async (promptOverride) => {
       { role: "user", text: prompt },
     ];
 
-    const response = await sendPrompt(prompt);
+    const response = await sendPrompt(prompt, historyForGemini);
 
     setPrevPrompts(prev => [
       ...prev,
       { role: "user", text: prompt },
-      { role: "model", text: response },
+      // { role: "model", text: response },
     ]);
 
     
