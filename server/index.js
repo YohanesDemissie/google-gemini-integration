@@ -15,7 +15,8 @@ app.use(express.json());
 
 // API route
 // app.use("/api", geminiRoute);
-app.use("/api/generate", generateRoute);
+// app.use("/api/generate", generateRoute);
+app.use("/api", generateRoute);
 export default app;
 // app.listen(PORT, () => {
 //   console.log(`Server running on port ${PORT}`);
