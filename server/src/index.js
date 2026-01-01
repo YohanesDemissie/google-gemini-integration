@@ -52,6 +52,6 @@ app.use(express.json());
 // API route
 app.use("/api", geminiRoute);
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// app.listen(PORT, () => {
+//   console.log(`Server running on port ${PORT}`);
+// });

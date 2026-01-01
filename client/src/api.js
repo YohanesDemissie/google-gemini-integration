@@ -1,5 +1,5 @@
 export const sendPrompt = async (prompt, history = []) => {
-  const res = await fetch("http://localhost:3001/api/generate", {
+  const res = await fetch("https://google-gemini-integration-beta.vercel.app/api/generate", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
