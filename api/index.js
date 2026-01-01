@@ -36,7 +36,7 @@
 
 //new stuf
 import './env.js'; // Must be imported first variables
-import geminiRoute from "../../routes/gemini.js";
+import geminiRoute from './server/routes/gemini.js'
 import express from "express";
 import cors from "cors";
 import path from "path";
@@ -52,6 +52,8 @@ app.use(express.json());
 // API route
 app.use("/api", geminiRoute);
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// app.listen(PORT, () => {
+//   console.log(`Server running on port ${PORT}`);
+// });
+
+export default app;
