@@ -1,2 +1,6 @@
 .env
 node_modules
+./server/api/.env
+.server/.env
+.api/env
+./env
