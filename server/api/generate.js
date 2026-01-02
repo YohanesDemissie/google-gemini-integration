@@ -1,10 +1,11 @@
+import "dotenv/config";
 import express from "express";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const router = express.Router();
-
-const genAi = new GoogleGenerativeAI(process.env.VITE_GEMINI_API_KEY);
-// const genAi = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+// const genAi = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
+// const genAi = new GoogleGenerativeAI(process.env.VITE_GEMINI_API_KEY);
+const genAi = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 
 router.post("/generate", async (req, res) => {

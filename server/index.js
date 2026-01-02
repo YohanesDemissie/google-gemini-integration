@@ -1,5 +1,6 @@
 import './env.js'; // Must be imported first variables
 // import geminiRoute from "../routes/gemini.js";
+import geminiRoute from "./routes/gemini.js";
 import generateRoute from './api/generate.js'
 import express from "express";
 import cors from "cors";
@@ -13,11 +14,12 @@ const PORT = 3001;
 app.use(cors());
 app.use(express.json());
 
-// API route
+// API route DEV
 // app.use("/api", geminiRoute);
-// app.use("/api/generate", generateRoute);
-app.use("/api", generateRoute);
-export default app;
 // app.listen(PORT, () => {
 //   console.log(`Server running on port ${PORT}`);
 // });
+
+// API route prod
+app.use("/api", generateRoute);
+export default app;

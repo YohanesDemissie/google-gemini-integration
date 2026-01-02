@@ -1,17 +1,21 @@
-const API_URL = import.meta.env.VITE_API_URL;
+// const API_URL = import.meta.env.VITE_API_URL;
 
 export const sendPrompt = async (prompt, history = []) => {
   const res = await fetch(`${API_URL}/api/generate`, {
+  // const res = await fetch(`http://localhost:3001/api/generate`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ prompt, history }),
   });
+  console.log("Response status:", res.status);
 
   const data = await res.json();
 
-  if (res.status === 429 || res.status === 5000) {
+  if (res.status === 429 || res.status === 500) {
+    // console.log(import.meta.env.VITE_GEMINI_API_KEY)
+    // console.log(process.env.GEMINI_API_KEY)
     return "Simulated response for development";
   }
   if (!res.ok) {
