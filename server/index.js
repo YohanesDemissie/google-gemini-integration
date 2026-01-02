@@ -14,11 +14,12 @@ const PORT = 3001;
 app.use(cors());
 app.use(express.json());
 
-// API route
-app.use("/api", geminiRoute);
-// app.use("/api/generate", generateRoute);
-// app.use("/api/generate", generateRoute);
-// export default app;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// API route DEV
+// app.use("/api", geminiRoute);
+// app.listen(PORT, () => {
+//   console.log(`Server running on port ${PORT}`);
+// });
+
+// API route prod
+app.use("/api", generateRoute);
+export default app;
