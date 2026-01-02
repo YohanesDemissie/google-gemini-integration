@@ -1,4 +1,4 @@
-// const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const sendPrompt = async (prompt, history = []) => {
   const res = await fetch(`${API_URL}/api/generate`, {
