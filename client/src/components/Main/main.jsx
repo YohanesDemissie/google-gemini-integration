@@ -41,7 +41,7 @@ const Main = () => {
                  </> : 
                     <div className="result">
                         <div className="result-title">
-                            <img src={assets.geoffrey_icon} alt="" />
+                            <img src={assets.will_fresh_prince} alt="" />
                             <p>{recentPrompt}</p>
                         </div>
                         <div className="result-data">
@@ -53,7 +53,7 @@ const Main = () => {
                                 </div>
                              : 
                                 <div>
-                                    <img src={assets.gemini_icon} alt="" />
+                                    <img src={assets.geoffrey_icon} alt="" />
                                     {/* ACTUAL API CALL RENDERING */}
                                         <p dangerouslySetInnerHTML={{__html:resultData}}></p>     
                                     {/* END ACTUAL API CALL RENDERING */}
