@@ -9,6 +9,7 @@ const ContextProvider = ({ children }) => {
   const [showResult, setShowResult] = useState(false);
   const [loading, setLoading] = useState(false);
   const [resultData, setResultData] = useState("");
+  const [status, getStatus] = useState(200);
 
   const delayPara = (index, nextWord) => {
     setTimeout(function() {
@@ -51,12 +52,16 @@ const onSent = async (promptOverride) => {
       // { role: "model", text: response },
     ]);
 
-    
-    // render response (unchanged)
-    // animateResponse(response);
+    console.log(response)
+    getStatus(response.status);
+    // if(response.status == 429){
+    //   response.generatedText = `My sincerest apologies. It appears the daily request tokens have been
+    //     depleted. Please check back again after midnight PST so I can further
+    //     assist you.
 
-        console.log(response)
-    let responseArray = response.split("**");
+    //     Cheers mate!`
+    // }
+    let responseArray = response.generatedText.split("**");
     let newResponse = "";
     for(let i = 0; i < responseArray.length; i++) {
         if(i === 0 || i % 2 === 1) {
@@ -81,27 +86,6 @@ const onSent = async (promptOverride) => {
   }
 };
 
-  // new stuff
-  // e.preventDefault();
-  //   try {
-  //     const res = await fetch('http://localhost:3001/generate', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({ prompt }),
-  //     });
-
-  //     const data = await res.json();
-  //     setResponse(data.generatedText);
-  //   } catch (error) {
-  //     console.error('Error fetching data:', error);
-  //     setResponse('Error generating response.');
-  //   }
-  // };
-
-  //end new stuff
-
   const contextValue = {
     prevPrompts,
     setPrevPrompts,
@@ -114,6 +98,7 @@ const onSent = async (promptOverride) => {
     input,
     setInput,
     newChat,
+    status
   };
 
   return (
